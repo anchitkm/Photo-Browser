@@ -16,6 +16,15 @@ fun ImageView.loadImage(uri: String?, progressDrawable: CircularProgressDrawable
         .load(uri)
         .into(this)
 }
+fun ImageView.loadImage(uri: String?) {
+    val options = RequestOptions()
+        .placeholder(R.drawable.placeholder)
+        .error(R.mipmap.ic_launcher)
+    Glide.with(this.context)
+        .setDefaultRequestOptions(options)
+        .load(uri)
+        .into(this)
+}
 
 fun getProgressDrawable(context: Context): CircularProgressDrawable {
     return CircularProgressDrawable(context).apply {

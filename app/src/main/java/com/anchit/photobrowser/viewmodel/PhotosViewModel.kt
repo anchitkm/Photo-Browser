@@ -6,13 +6,12 @@ import androidx.lifecycle.ViewModel
 import com.anchit.photobrowser.service.model.FlickrResponse
 import com.anchit.photobrowser.service.repository.Repository
 
-class PhotosViewModel : ViewModel() {
+class PhotosViewModel : MyObserver() {
 
     companion object {
         private val TAG = PhotosViewModel::class.java.simpleName
     }
 
-    val listFlickrPhoto=MutableLiveData<List<FlickrResponse.Photos.Photo>>()
     var error: LiveData<Boolean> = MutableLiveData()
     private var PAGE_NO = 1
     private var PAGE_SIZE = 100
