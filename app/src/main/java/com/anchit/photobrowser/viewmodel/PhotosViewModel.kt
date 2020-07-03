@@ -3,39 +3,51 @@ package com.anchit.photobrowser.viewmodel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
+import androidx.paging.LivePagedListBuilder
+import androidx.paging.PagedList
 import com.anchit.photobrowser.service.model.FlickrResponse
-import com.anchit.photobrowser.service.repository.Repository
+import com.anchit.photobrowser.service.model.usecase.PhotosDataSourceFactory
+import com.anchit.photobrowser.util.Constants
 
-class PhotosViewModel : MyObserver() {
+class PhotosViewModel : ViewModel() {
 
     companion object {
         private val TAG = PhotosViewModel::class.java.simpleName
     }
 
-    var error: LiveData<Boolean> = MutableLiveData()
-    private var PAGE_NO = 1
-    private var PAGE_SIZE = 100
+    var showError= MutableLiveData<Boolean>()
+    private lateinit var dataSourceFactory: PhotosDataSourceFactory
+    lateinit var pagedPhotoList: LiveData<PagedList<FlickrResponse.Photos.Photo>>
 
 
+    fun initDataSource() {
 
-    fun getFlickrPhotos(){
+        dataSourceFactory= PhotosDataSourceFactory(viewModelScope)
 
-        Repository.flickrPhotoList.observeForever {
+        val config = PagedList.Config.Builder()
+            .setPageSize(Constants.pageSize)
+            .setInitialLoadSizeHint(Constants.pageSize)
+            .setEnablePlaceholders(true)
+            .build()
 
-        listFlickrPhoto.value=it
-        }
-            Repository.getRecentPhotos(
-                pageNo = PAGE_NO,
-                pageSize=PAGE_SIZE
-            )
+        pagedPhotoList = LivePagedListBuilder(dataSourceFactory,config)
+            .setBoundaryCallback(object : PagedList.BoundaryCallback<FlickrResponse.Photos.Photo> (){
+                override fun onZeroItemsLoaded() {
+                    super.onZeroItemsLoaded()
+                    showError.postValue(true)
+                }
+
+                override fun onItemAtEndLoaded(itemAtEnd: FlickrResponse.Photos.Photo) {
+                    super.onItemAtEndLoaded(itemAtEnd)
+                    showError.postValue(false)
+                }
+
+                override fun onItemAtFrontLoaded(itemAtFront: FlickrResponse.Photos.Photo) {
+                    super.onItemAtFrontLoaded(itemAtFront)
+                    showError.postValue(false)
+                }
+            }).build()
     }
 
-    override fun onCleared() {
-        super.onCleared()
-        Repository.flickrPhotoList.removeObserver { it }
-    }
-
-    fun refresh() {
-        getFlickrPhotos()
-    }
 }

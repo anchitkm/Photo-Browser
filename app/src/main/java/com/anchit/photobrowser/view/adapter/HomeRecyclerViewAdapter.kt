@@ -3,7 +3,6 @@ package com.anchit.photobrowser.view.adapter
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.lifecycle.MutableLiveData
 import androidx.recyclerview.widget.RecyclerView
 import com.anchit.photobrowser.R
 import com.anchit.photobrowser.service.model.FlickrResponse

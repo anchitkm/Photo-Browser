@@ -43,9 +43,9 @@ class DetailFragment : Fragment() {
             ViewModelProvider(this).get(PhotosViewModel::class.java)
         }!!
 
-        viewModel.listFlickrPhoto.observe(viewLifecycleOwner, Observer { listFlickrPhoto ->
+        viewModel.pagedPhotoList.observe(viewLifecycleOwner, Observer { listFlickrPhoto ->
             listFlickrPhoto?.let {
-                binding.root.iv_fullSize.loadImage(it[itemPosition].urlS)
+                binding.root.iv_fullSize.loadImage(it[itemPosition]?.urlS)
             }
         })
 

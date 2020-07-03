@@ -6,8 +6,6 @@ import com.anchit.photobrowser.service.network.FlickrService
 import com.anchit.photobrowser.service.network.FlickrServiceBuilder
 import com.anchit.photobrowser.util.Constants
 import retrofit2.Call
-import retrofit2.Callback
-import retrofit2.Response
 
 object Repository {
 
@@ -18,25 +16,11 @@ object Repository {
         return FlickrServiceBuilder.buildService(FlickrService::class.java)
     }
 
-    fun getRecentPhotos(pageNo: Int,pageSize:Int) {
-        val response= getApi().getRecentPhotos(pageNo,100,Constants.key)
 
+    fun getRecentPhotos(pageNo: Int,pageSize:Int): Call<FlickrResponse> {
 
-        response.enqueue(object : Callback<FlickrResponse> {
-            override fun onFailure(call: Call<FlickrResponse>, t: Throwable) {
-                error.value = true
-            }
+        return getApi().getRecentPhotos(pageNo,pageSize,Constants.key)
 
-            override fun onResponse(call: Call<FlickrResponse>, response: Response<FlickrResponse>) {
-                if (response.isSuccessful) {
-                    val flickrResponse = response.body()
-                    val flickrPhotos = flickrResponse?.photos
-                    flickrPhotoList.value = flickrPhotos?.photo
-                }else {
-                    error.value=true
-                }
-
-            }
-        })
     }
+
 }
