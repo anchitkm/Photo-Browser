@@ -10,7 +10,6 @@ import retrofit2.Call
 object Repository {
 
     var error: MutableLiveData<Boolean> = MutableLiveData()
-    val flickrPhotoList=MutableLiveData<List<FlickrResponse.Photos.Photo>>()
     private fun getApi(): FlickrService {
 
         return FlickrServiceBuilder.buildService(FlickrService::class.java)
