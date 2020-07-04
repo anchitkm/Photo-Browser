@@ -7,24 +7,26 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
+import androidx.paging.PagedList
 import com.anchit.photobrowser.databinding.FragmentDetailBinding
-import com.anchit.photobrowser.util.extensions.loadImage
+import com.anchit.photobrowser.service.model.FlickrResponse
+import com.anchit.photobrowser.ui.component.model.CarouselItemModel
 import com.anchit.photobrowser.viewmodel.PhotosViewModel
-import kotlinx.android.synthetic.main.fragment_detail.view.*
+import kotlinx.android.synthetic.main.component_carousel.view.*
 
 
 private const val ARG_POS = "position"
 class DetailFragment : Fragment() {
 
 
-    private lateinit var binding:FragmentDetailBinding
-    private var itemPosition=0
+    private lateinit var binding: FragmentDetailBinding
+    private var selectedItemPosition = 0
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         arguments?.let {
-            itemPosition = it.getInt(ARG_POS)
+            selectedItemPosition = it.getInt(ARG_POS)
         }
     }
 
@@ -33,7 +35,7 @@ class DetailFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         // Inflate the layout for this fragment
-        binding= FragmentDetailBinding.inflate(inflater,container,false)
+        binding = FragmentDetailBinding.inflate(inflater, container, false)
         return binding.root
     }
 
@@ -45,9 +47,25 @@ class DetailFragment : Fragment() {
 
         viewModel.pagedPhotoList.observe(viewLifecycleOwner, Observer { listFlickrPhoto ->
             listFlickrPhoto?.let {
-                binding.root.iv_fullSize.loadImage(it[itemPosition]?.urlS)
+                binding.root.carousal_view_.setItemList(formedCarouselData(it))
+                binding.root.carousal_view_.getViewPager().currentItem = selectedItemPosition
             }
         })
+
+    }
+
+    /**
+     * This is to create and init the carousel item model needed to show the images in view pager.
+     */
+    private fun formedCarouselData(pagedList: PagedList<FlickrResponse.Photos.Photo>): MutableList<CarouselItemModel> {
+
+        val mCarouselDataList: MutableList<CarouselItemModel> = mutableListOf()
+        for (item in pagedList) {
+            val carouselItemModel = CarouselItemModel(item.urlS)
+            mCarouselDataList.add(carouselItemModel)
+        }
+
+        return mCarouselDataList
 
     }
 

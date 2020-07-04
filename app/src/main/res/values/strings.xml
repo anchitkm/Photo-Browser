@@ -1,4 +1,5 @@
 <resources>
     <string name="app_name">Photo Browser</string>
-    <string name="download_image">Download Image</string>
+    <string name="download_image">Download</string>
+    <string name="open">Open</string>
 </resources>

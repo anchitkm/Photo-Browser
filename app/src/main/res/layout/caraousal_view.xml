@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/llCaraousalView"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+
+    >
+
+    <com.anchit.photobrowser.ui.component.adapter.CarouselViewPager
+        android:id="@+id/carousel_viewpager"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_marginBottom="10dp"
+        android:layout_weight="0.9"
+        android:clipToPadding="false" />
+
+    <TextView
+        android:id="@+id/indicatorText"
+        android:layout_width="match_parent"
+        android:layout_height="30dp"
+        android:layout_marginStart="20dp"
+        android:gravity="start"
+        android:visibility="visible"
+
+        />
+
+</LinearLayout>
