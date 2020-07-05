@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.anchit.photobrowser.ui.component.view.CarouselView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/carousal_view_"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent" />

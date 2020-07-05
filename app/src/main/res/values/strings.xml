@@ -1,3 +1,15 @@
 <resources>
     <string name="app_name">Photo Browser</string>
+    <string name="download_image">Download</string>
+    <string name="open">Open</string>
+    <string name="permission_required">Permission required</string>
+    <string name="permission_is_required_to">Permission is required to save photos in Gallery.</string>
+    <string name="allow">Allow</string>
+    <string name="deny">Deny</string>
+    <string name="download_has_failed">Download has been failed, Please try again</string>
+    <string name="paused">Paused</string>
+    <string name="pending">Pending</string>
+    <string name="downloading">Downloading...</string>
+    <string name="image_downloaded">Image downloaded successfully</string>
+    <string name="nothing_to_show">There\'s nothing to download</string>
 </resources>
