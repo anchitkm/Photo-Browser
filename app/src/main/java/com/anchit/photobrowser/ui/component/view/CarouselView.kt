@@ -24,14 +24,15 @@ import kotlinx.android.synthetic.main.caraousal_view.view.*
  */
 class CarouselView @JvmOverloads constructor(
     context: Context, attrs: AttributeSet? = null, defStyleAttr: Int = 0
-) : LinearLayout(context, attrs, defStyleAttr), ViewPager.OnPageChangeListener {
+) : LinearLayout(context, attrs, defStyleAttr), ViewPager.OnPageChangeListener{
 
 
     private lateinit var mCarouselContainer: View
     private lateinit var mCarousalViewAdapter: CarousalViewAdapter
     private val TAG = CarouselView::javaClass.name
     private lateinit var wrapperAdapter: InfiniteAdapter
-   private var realPosition=0
+    private var realPosition = 0
+    private var mListener: IPageSelected? = null
 
     private var mCarouselItemList: List<CarouselItemModel> = ArrayList()
 
@@ -64,7 +65,7 @@ class CarouselView @JvmOverloads constructor(
 
         mCarouselContainer.carousel_viewpager.setPagingEnabled(mCarouselItemList.size > 1)
 
-            showTextIndicator()
+        showTextIndicator()
     }
 
     /**
@@ -86,6 +87,9 @@ class CarouselView @JvmOverloads constructor(
         Log.d("CarouselView", "onPageSelected: $position")
 
         realPosition = position % wrapperAdapter.getRealCount()
+        Log.e("Photo Id"," onPageSelected "+mCarouselItemList[realPosition].photoId )
+        mListener?.onPageSelected()
+
 
         Log.d("Real Position", "onPageSelected: $realPosition")
 
@@ -115,9 +119,20 @@ class CarouselView @JvmOverloads constructor(
     }
 
 
+    /**
+     * This is to get the current real position
+     */
     fun getCurrentPosition(): Int {
         return realPosition
     }
 
 
+    fun setPageSelectedListener(listener: IPageSelected) {
+        mListener=listener
+    }
+
+
+    interface IPageSelected {
+        fun onPageSelected()
+    }
 }

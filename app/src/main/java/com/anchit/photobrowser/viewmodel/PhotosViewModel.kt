@@ -7,7 +7,9 @@ import androidx.lifecycle.viewModelScope
 import androidx.paging.LivePagedListBuilder
 import androidx.paging.PagedList
 import com.anchit.photobrowser.service.model.FlickrResponse
+import com.anchit.photobrowser.service.model.PhotoInfo
 import com.anchit.photobrowser.service.model.usecase.PhotosDataSourceFactory
+import com.anchit.photobrowser.service.repository.Repository
 import com.anchit.photobrowser.util.Constants
 
 class PhotosViewModel : ViewModel() {
@@ -16,14 +18,15 @@ class PhotosViewModel : ViewModel() {
         private val TAG = PhotosViewModel::class.java.simpleName
     }
 
-    var showError= MutableLiveData<Boolean>()
+    var showError = MutableLiveData<Boolean>()
     private lateinit var dataSourceFactory: PhotosDataSourceFactory
     lateinit var pagedPhotoList: LiveData<PagedList<FlickrResponse.Photos.Photo>>
+    var photoInfo = MutableLiveData<PhotoInfo>()
 
 
     fun initDataSource() {
 
-        dataSourceFactory= PhotosDataSourceFactory(viewModelScope)
+        dataSourceFactory = PhotosDataSourceFactory(viewModelScope)
 
         val config = PagedList.Config.Builder()
             .setPageSize(Constants.pageSize)
@@ -31,8 +34,9 @@ class PhotosViewModel : ViewModel() {
             .setEnablePlaceholders(true)
             .build()
 
-        pagedPhotoList = LivePagedListBuilder(dataSourceFactory,config)
-            .setBoundaryCallback(object : PagedList.BoundaryCallback<FlickrResponse.Photos.Photo> (){
+        pagedPhotoList = LivePagedListBuilder(dataSourceFactory, config)
+            .setBoundaryCallback(object :
+                PagedList.BoundaryCallback<FlickrResponse.Photos.Photo>() {
                 override fun onZeroItemsLoaded() {
                     super.onZeroItemsLoaded()
                     showError.postValue(true)
@@ -49,5 +53,20 @@ class PhotosViewModel : ViewModel() {
                 }
             }).build()
     }
+
+    fun getPhotoInfo(photoId: String) {
+
+        Repository.photoInfo.observeForever {
+
+            photoInfo.value = it
+        }
+        Repository.getPhotoDetails(photoId)
+    }
+
+    override fun onCleared() {
+        super.onCleared()
+        Repository.photoInfo.removeObserver { it }
+    }
+
 
 }

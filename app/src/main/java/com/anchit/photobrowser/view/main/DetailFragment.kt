@@ -1,5 +1,6 @@
 package com.anchit.photobrowser.view.main
 
+import androidx.fragment.app.Fragment
 import android.Manifest
 import android.annotation.TargetApi
 import android.app.DownloadManager
@@ -18,7 +19,6 @@ import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
-import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.paging.PagedList
@@ -26,15 +26,17 @@ import com.anchit.photobrowser.R
 import com.anchit.photobrowser.databinding.FragmentDetailBinding
 import com.anchit.photobrowser.service.model.FlickrResponse
 import com.anchit.photobrowser.ui.component.model.CarouselItemModel
+import com.anchit.photobrowser.ui.component.view.CarouselView
 import com.anchit.photobrowser.viewmodel.PhotosViewModel
 import kotlinx.android.synthetic.main.component_carousel.*
 import kotlinx.android.synthetic.main.component_carousel.view.*
+import kotlinx.android.synthetic.main.fragment_detail.view.*
 import java.io.File
 
 
-private const val ARG_POS = "position"
+class DetailFragment : Fragment(), CarouselView.IPageSelected {
 
-class DetailFragment : Fragment() {
+    private val ARG_POS = "position"
 
 
     private lateinit var binding: FragmentDetailBinding
@@ -42,6 +44,7 @@ class DetailFragment : Fragment() {
     private val mCarouselDataList: MutableList<CarouselItemModel> = mutableListOf()
     private var msg: String? = ""
     private var lastMsg = ""
+    private var viewModel: PhotosViewModel? = null
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -62,9 +65,10 @@ class DetailFragment : Fragment() {
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
-        val viewModel = activity?.run {
+        viewModel = activity?.run {
             ViewModelProvider(this).get(PhotosViewModel::class.java)
         }!!
+        binding.root.carousal_view_.setPageSelectedListener(this)
 
         binding.btnDownload.setOnClickListener {
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M && Build.VERSION.SDK_INT < Build.VERSION_CODES.Q) {
@@ -74,7 +78,7 @@ class DetailFragment : Fragment() {
             }
         }
 
-        viewModel.pagedPhotoList.observe(viewLifecycleOwner, Observer { listFlickrPhoto ->
+        viewModel?.pagedPhotoList?.observe(viewLifecycleOwner, Observer { listFlickrPhoto ->
             listFlickrPhoto?.let {
 
                 Log.e("Test Clicked item URL", it[selectedItemPosition]?.urlS!!)
@@ -82,6 +86,11 @@ class DetailFragment : Fragment() {
                 binding.root.carousal_view_.setItemList(formedCarouselData(it))
                 binding.root.carousal_view_.getViewPager().currentItem = selectedItemPosition
             }
+        })
+
+        viewModel?.photoInfo?.observeForever(Observer {
+            binding.root.tv_imgTitle.text = it.photo.title.content
+            binding.root.tv_imgDesc.text = it.photo.description.content
         })
 
     }
@@ -155,7 +164,10 @@ class DetailFragment : Fragment() {
      */
     private fun downloadImage(imageUrl: String) {
 
-        Log.e("Test Download Url", mCarouselDataList[carousal_view_.getCurrentPosition()].carouselUrl)
+        Log.e(
+            "Test Download Url",
+            mCarouselDataList[carousal_view_.getCurrentPosition()].carouselUrl
+        )
 
         val directory = File(Environment.DIRECTORY_PICTURES)
 
@@ -223,7 +235,7 @@ class DetailFragment : Fragment() {
      */
     private fun formedCarouselData(pagedList: PagedList<FlickrResponse.Photos.Photo>): MutableList<CarouselItemModel> {
         for (item in pagedList) {
-            val carouselItemModel = CarouselItemModel(item.urlS)
+            val carouselItemModel = CarouselItemModel(item.urlS, item.id)
             mCarouselDataList.add(carouselItemModel)
         }
 
@@ -239,6 +251,18 @@ class DetailFragment : Fragment() {
         }
 
         private const val PERMISSIONS_REQUEST_WRITE_EXTERNAL_STORAGE = 1
+    }
+
+    override fun onPageSelected() {
+
+        fetchPhotoInfo(mCarouselDataList[binding.root.carousal_view_.getCurrentPosition()].photoId)
+    }
+
+    /**
+     * This is to make the api call to get the photos info.
+     */
+    private fun fetchPhotoInfo(photoId: String) {
+        viewModel?.getPhotoInfo(photoId)
     }
 
 

@@ -46,7 +46,7 @@ PagedListAdapter<FlickrResponse.Photos.Photo,PageRecyclerViewAdapter<T>.Holder>(
 
 
     interface ItemClickListener{
-        fun onitemClicked(pos:Int)
+        fun onItemClicked(pos:Int)
     }
 
     inner class Holder(binding: ViewDataBinding):RecyclerView.ViewHolder(binding.root)
@@ -65,7 +65,7 @@ PagedListAdapter<FlickrResponse.Photos.Photo,PageRecyclerViewAdapter<T>.Holder>(
         binding?.adapter=this
 
         holder.itemView.setOnClickListener {
-            mListener?.onitemClicked(position)
+            mListener?.onItemClicked(position)
 
         }
 

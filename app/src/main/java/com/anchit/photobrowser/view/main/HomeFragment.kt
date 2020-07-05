@@ -98,7 +98,7 @@ class HomeFragment : Fragment(), PageRecyclerViewAdapter.ItemClickListener {
 
     }
 
-    override fun onitemClicked(pos: Int) {
+    override fun onItemClicked(pos: Int) {
         val detailFrag = DetailFragment.newInstance(pos)
         activity?.supportFragmentManager?.beginTransaction()
             ?.replace(R.id.container, detailFrag, "detailFragment")
