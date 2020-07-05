@@ -10,7 +10,7 @@ import com.anchit.photobrowser.ui.component.model.CarouselItemModel
 import com.anchit.photobrowser.util.extensions.loadImage
 
 
-open class CarousalViewAdapter() : PagerAdapter() {
+open class CarousalViewAdapter : PagerAdapter() {
     private var carouselImageContainer: ViewGroup? = null
     private val TAG: String = CarousalViewAdapter::class.java.toString()
 

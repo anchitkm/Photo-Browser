@@ -9,7 +9,7 @@ import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 
-class PhotoDataSource(var scope: CoroutineScope) :
+class PhotoDataSource(private var scope: CoroutineScope) :
     PageKeyedDataSource<Long, FlickrResponse.Photos.Photo>() {
 
     override fun loadInitial(

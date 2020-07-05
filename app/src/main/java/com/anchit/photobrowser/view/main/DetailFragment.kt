@@ -40,8 +40,8 @@ class DetailFragment : Fragment() {
     private lateinit var binding: FragmentDetailBinding
     private var selectedItemPosition = 0
     private val mCarouselDataList: MutableList<CarouselItemModel> = mutableListOf()
-    var msg: String? = ""
-    var lastMsg = ""
+    private var msg: String? = ""
+    private var lastMsg = ""
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -208,12 +208,12 @@ class DetailFragment : Fragment() {
     private fun statusMessage(status: Int): String? {
         var msg = ""
         msg = when (status) {
-            DownloadManager.STATUS_FAILED -> "Download has been failed, please try again"
-            DownloadManager.STATUS_PAUSED -> "Paused"
-            DownloadManager.STATUS_PENDING -> "Pending"
-            DownloadManager.STATUS_RUNNING -> "Downloading..."
-            DownloadManager.STATUS_SUCCESSFUL -> "Image downloaded successfully"
-            else -> "There's nothing to download"
+            DownloadManager.STATUS_FAILED -> getString(R.string.download_has_failed)
+            DownloadManager.STATUS_PAUSED -> getString(R.string.paused)
+            DownloadManager.STATUS_PENDING -> getString(R.string.pending)
+            DownloadManager.STATUS_RUNNING -> getString(R.string.downloading)
+            DownloadManager.STATUS_SUCCESSFUL -> getString(R.string.image_downloaded)
+            else -> getString(R.string.nothing_to_show)
         }
         return msg
     }

@@ -7,7 +7,4 @@ import java.io.Serializable
  * This is defining the protocol that needs to be created for Carousel.
  * @param carouselUrl -  This is the url for loading the images that needs to be loaded to carousel item.
  */
-data class CarouselItemModel(var carouselUrl:String): Serializable{
-
-
-}
+data class CarouselItemModel(var carouselUrl:String): Serializable

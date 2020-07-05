@@ -11,7 +11,6 @@ import android.view.LayoutInflater.from
 import android.view.View
 import android.widget.LinearLayout
 import androidx.viewpager.widget.ViewPager
-import androidx.viewpager.widget.ViewPager.PageTransformer
 import com.anchit.photobrowser.R
 import com.anchit.photobrowser.ui.component.adapter.CarousalViewAdapter
 import com.anchit.photobrowser.ui.component.adapter.CarouselViewPager

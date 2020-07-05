@@ -55,7 +55,7 @@ class HomeFragment : Fragment(), PageRecyclerViewAdapter.ItemClickListener {
 
         swipeRefreshLayout.setOnRefreshListener {
             if(photosList.size>0){
-                pageRecyclerViewAdapter?.submitList(null)
+                pageRecyclerViewAdapter.submitList(null)
                 viewModel.initDataSource()
                 observeViewModel()
 

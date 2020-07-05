@@ -10,7 +10,7 @@ import com.anchit.photobrowser.databinding.LayoutGridItemBinding
 import com.anchit.photobrowser.service.model.FlickrResponse
 import com.anchit.photobrowser.util.extensions.loadImage
 
-class PageRecyclerViewAdapter<T>():
+class PageRecyclerViewAdapter<T> :
 PagedListAdapter<FlickrResponse.Photos.Photo,PageRecyclerViewAdapter<T>.Holder>(photoListDiff){
 
     private var mListener:ItemClickListener?=null
@@ -49,7 +49,7 @@ PagedListAdapter<FlickrResponse.Photos.Photo,PageRecyclerViewAdapter<T>.Holder>(
         fun onitemClicked(pos:Int)
     }
 
-    inner class Holder(var binding: ViewDataBinding):RecyclerView.ViewHolder(binding.root)
+    inner class Holder(binding: ViewDataBinding):RecyclerView.ViewHolder(binding.root)
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): Holder {
         binding= LayoutGridItemBinding.inflate(LayoutInflater.from(parent.context), parent, false)

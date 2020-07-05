@@ -5,10 +5,10 @@ import androidx.paging.DataSource
 import com.anchit.photobrowser.service.model.FlickrResponse
 import kotlinx.coroutines.CoroutineScope
 
-class PhotosDataSourceFactory(var scope: CoroutineScope) :
+class PhotosDataSourceFactory(private var scope: CoroutineScope) :
     DataSource.Factory<Long, FlickrResponse.Photos.Photo>() {
 
-    var dataSourceLiveData = MutableLiveData<PhotoDataSource>()
+    private var dataSourceLiveData = MutableLiveData<PhotoDataSource>()
     override fun create(): DataSource<Long, FlickrResponse.Photos.Photo>{
 
         val photoDataSource = PhotoDataSource(scope)
