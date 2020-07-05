@@ -56,10 +56,14 @@ class CarouselView @JvmOverloads constructor(
 
     }
 
+    /**
+     * This is to load the data in carousel adapter.
+     */
     private fun setData() {
 
         mCarousalViewAdapter.setCarousalItemList(mCarouselItemList)
 
+        //wrapper adapter is used to handle the infinite scrolling in viewpager.
         wrapperAdapter = InfiniteAdapter(mCarousalViewAdapter)
         mCarouselContainer.carousel_viewpager.adapter = wrapperAdapter
 

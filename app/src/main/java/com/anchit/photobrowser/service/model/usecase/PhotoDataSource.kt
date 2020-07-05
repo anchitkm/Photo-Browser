@@ -12,6 +12,21 @@ import retrofit2.Response
 class PhotoDataSource(private var scope: CoroutineScope) :
     PageKeyedDataSource<Long, FlickrResponse.Photos.Photo>() {
 
+    /**
+     * Load initial data.
+     * <p>
+     * This method is called first to initialize a PagedList with data. If it's possible to count
+     * the items that can be loaded by the DataSource, it's recommended to pass the loaded data to
+     * the callback via the three-parameter
+     * {@link LoadInitialCallback#onResult(List, int, int, Object, Object)}. This enables PagedLists
+     * presenting data from this source to display placeholders to represent unloaded items.
+     * <p>
+     * {@link LoadInitialParams#requestedLoadSize} is a hint, not a requirement, so it may be may be
+     * altered or ignored.
+     *
+     * @param params Parameters for initial load, including requested load size.
+     * @param callback Callback that receives initial load data.
+     */
     override fun loadInitial(
         params: LoadInitialParams<Long>,
         callback: LoadInitialCallback<Long, FlickrResponse.Photos.Photo>
@@ -33,7 +48,6 @@ class PhotoDataSource(private var scope: CoroutineScope) :
                                 callback.onResult(photoList,null,2)
                             }
                         }
-//                        Repository.flickrPhotoList.value = flickrPhotos?.photo
                     }else {
                         Repository.error.value=true
                     }

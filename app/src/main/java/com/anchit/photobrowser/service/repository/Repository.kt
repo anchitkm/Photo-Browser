@@ -26,7 +26,11 @@ object Repository {
 
     }
 
-
+    /**
+     * This is to get the photo details on the basis of provided photoID.
+     *
+     * @param photoId - Photoid of which the details will be fetched.
+     */
     fun getPhotoDetails(photoId: String) {
         val response = getApi().getPhotoDetails(Constants.key, photoId)
 

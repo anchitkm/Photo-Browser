@@ -80,6 +80,7 @@ class DetailFragment : Fragment(), CarouselView.IPageSelected {
                 downloadImage(mCarouselDataList[carousal_view_.getCurrentPosition()].carouselUrl)
             }
         }
+        binding.btnOpenView.visibility=View.GONE
 
         viewModel?.pagedPhotoList?.observe(viewLifecycleOwner, Observer { listFlickrPhoto ->
             listFlickrPhoto?.let {
