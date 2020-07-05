@@ -32,6 +32,7 @@ class CarouselView @JvmOverloads constructor(
     private lateinit var mCarousalViewAdapter: CarousalViewAdapter
     private val TAG = CarouselView::javaClass.name
     private lateinit var wrapperAdapter: InfiniteAdapter
+   private var realPosition=0
 
     private var mCarouselItemList: List<CarouselItemModel> = ArrayList()
 
@@ -85,7 +86,10 @@ class CarouselView @JvmOverloads constructor(
     override fun onPageSelected(position: Int) {
         Log.d("CarouselView", "onPageSelected: $position")
 
-        val realPosition = position % wrapperAdapter.getRealCount()
+        realPosition = position % wrapperAdapter.getRealCount()
+
+        Log.d("Real Position", "onPageSelected: $realPosition")
+
         val indicatorText = SpannableString(
             (realPosition + 1).toString() + " of "
                     + (mCarouselItemList.size).toString()
@@ -109,6 +113,11 @@ class CarouselView @JvmOverloads constructor(
             Spannable.SPAN_EXCLUSIVE_EXCLUSIVE
         )
         mCarouselContainer.indicatorText.text = indicatorText
+    }
+
+
+    fun getCurrentPosition(): Int {
+        return realPosition
     }
 
 
