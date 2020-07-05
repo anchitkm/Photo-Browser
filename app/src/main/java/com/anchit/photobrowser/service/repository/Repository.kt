@@ -1,6 +1,7 @@
 package com.anchit.photobrowser.service.repository
 
 import androidx.lifecycle.MutableLiveData
+import com.anchit.photobrowser.BuildConfig
 import com.anchit.photobrowser.service.model.FlickrResponse
 import com.anchit.photobrowser.service.model.PhotoInfo
 import com.anchit.photobrowser.service.network.FlickrService
@@ -22,7 +23,7 @@ object Repository {
 
     fun getRecentPhotos(pageNo: Int, pageSize: Int): Call<FlickrResponse> {
 
-        return getApi().getRecentPhotos(pageNo, pageSize, Constants.key)
+        return getApi().getRecentPhotos(pageNo, pageSize, BuildConfig.CONSUMER_KEY)
 
     }
 
@@ -32,7 +33,7 @@ object Repository {
      * @param photoId - Photoid of which the details will be fetched.
      */
     fun getPhotoDetails(photoId: String) {
-        val response = getApi().getPhotoDetails(Constants.key, photoId)
+        val response = getApi().getPhotoDetails(BuildConfig.CONSUMER_KEY, photoId)
 
 
         response.enqueue(object : Callback<PhotoInfo> {
