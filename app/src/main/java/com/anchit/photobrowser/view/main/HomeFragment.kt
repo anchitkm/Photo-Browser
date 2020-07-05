@@ -13,8 +13,11 @@ import androidx.recyclerview.widget.StaggeredGridLayoutManager
 import com.anchit.photobrowser.R
 import com.anchit.photobrowser.databinding.MainFragmentBinding
 import com.anchit.photobrowser.service.model.FlickrResponse
+import com.anchit.photobrowser.util.AppUtils
+import com.anchit.photobrowser.util.extensions.showSnackBar
 import com.anchit.photobrowser.view.adapter.PageRecyclerViewAdapter
 import com.anchit.photobrowser.viewmodel.PhotosViewModel
+import kotlinx.android.synthetic.main.main_activity.*
 import kotlinx.android.synthetic.main.main_fragment.*
 import kotlinx.android.synthetic.main.main_fragment.view.*
 
@@ -49,17 +52,32 @@ class HomeFragment : Fragment(), PageRecyclerViewAdapter.ItemClickListener {
             ViewModelProvider(this).get(PhotosViewModel::class.java)
         }!!
 
-        viewModel.initDataSource()
-        observeViewModel()
-
+        fetchData()
 
         swipeRefreshLayout.setOnRefreshListener {
-            if(photosList.size>0){
-                pageRecyclerViewAdapter.submitList(null)
-                viewModel.initDataSource()
-                observeViewModel()
 
+            if(::photosList.isInitialized && photosList.size>0) {
+                pageRecyclerViewAdapter.submitList(null)
             }
+               fetchData()
+        }
+    }
+
+    /**
+     * This is to fetch the data from repository and observing the viewmodels.
+     */
+    private fun fetchData(){
+        if(AppUtils.isNetworkConnected) {
+            activity?.errorView?.visibility=View.GONE
+            viewModel.initDataSource()
+            observeViewModel()
+        }else{
+            if(swipeRefreshLayout.isRefreshing){
+                swipeRefreshLayout.isRefreshing=false
+            }
+            showSnackBar(binding.root,"Please Check your Network Connection")
+            activity?.errorView?.visibility=View.VISIBLE
+
         }
     }
 

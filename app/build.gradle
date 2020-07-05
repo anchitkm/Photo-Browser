@@ -39,6 +39,7 @@ android {
 dependencies {
     implementation 'androidx.legacy:legacy-support-v4:1.0.0'
     implementation 'androidx.paging:paging-runtime-ktx:2.1.0'
+    implementation 'com.google.android.material:material:1.1.0'
     def support_version = "1.1.0"
     implementation fileTree(dir: "libs", include: ["*.jar"])
     implementation "org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version"
@@ -76,6 +77,9 @@ dependencies {
 
     //swipe refresh
     implementation 'androidx.swiperefreshlayout:swiperefreshlayout:1.1.0'
+
+    def lottieVersion = "3.4.1"
+    implementation "com.airbnb.android:lottie:$lottieVersion"
 
 
 

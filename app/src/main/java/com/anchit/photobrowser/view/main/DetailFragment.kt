@@ -1,6 +1,5 @@
 package com.anchit.photobrowser.view.main
 
-import androidx.fragment.app.Fragment
 import android.Manifest
 import android.annotation.TargetApi
 import android.app.DownloadManager
@@ -19,6 +18,7 @@ import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
+import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.paging.PagedList
@@ -27,10 +27,13 @@ import com.anchit.photobrowser.databinding.FragmentDetailBinding
 import com.anchit.photobrowser.service.model.FlickrResponse
 import com.anchit.photobrowser.ui.component.model.CarouselItemModel
 import com.anchit.photobrowser.ui.component.view.CarouselView
+import com.anchit.photobrowser.util.AppUtils
+import com.anchit.photobrowser.util.extensions.showSnackBar
 import com.anchit.photobrowser.viewmodel.PhotosViewModel
 import kotlinx.android.synthetic.main.component_carousel.*
 import kotlinx.android.synthetic.main.component_carousel.view.*
 import kotlinx.android.synthetic.main.fragment_detail.view.*
+import kotlinx.android.synthetic.main.main_activity.*
 import java.io.File
 
 
@@ -255,7 +258,13 @@ class DetailFragment : Fragment(), CarouselView.IPageSelected {
 
     override fun onPageSelected() {
 
-        fetchPhotoInfo(mCarouselDataList[binding.root.carousal_view_.getCurrentPosition()].photoId)
+
+        if(AppUtils.isNetworkConnected) {
+            activity?.errorView?.visibility=View.GONE
+            fetchPhotoInfo(mCarouselDataList[binding.root.carousal_view_.getCurrentPosition()].photoId)
+        }else{
+            showSnackBar(binding.root,"Please Check your Network Connection")
+        }
     }
 
     /**
