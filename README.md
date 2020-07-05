@@ -26,3 +26,10 @@
   
   i. Espresso
   
+  More Scope:
+    1. Shared Element transition to show animation effect. - Partially Done.
+    2. Zoom Enabled Images
+    3. Double click to zoom.
+  
+PS: The consumer key needs to be hidden, so used key.properties file but not added in .gitIgnore to showcase, how does it work.
+Commented in .gitignore. Ideally it should never be pushed to repo.
